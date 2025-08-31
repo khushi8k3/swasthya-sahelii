@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, Mic, Send, Heart, Thermometer, Zap } from "lucide-react";
+import { AlertTriangle, Mic, Send, Heart, Thermometer, Zap, Brain } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import SymptomQuestionnaire from "@/components/SymptomQuestionnaire";
 
 const symptomCategories = [
   { id: "menstrual", label: "Menstrual Health", icon: Heart, color: "bg-secondary" },
@@ -25,6 +26,7 @@ export default function Report() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [severity, setSeverity] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [showQuestionnaire, setShowQuestionnaire] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = () => {
@@ -73,6 +75,19 @@ export default function Report() {
     }
   };
 
+  const handleQuestionnaireComplete = (detectedSeverity: "mild" | "moderate" | "severe") => {
+    setSeverity(detectedSeverity);
+    setShowQuestionnaire(false);
+    toast({
+      title: "AI Assessment Complete",
+      description: `Your symptoms have been assessed as ${detectedSeverity} severity.`,
+    });
+  };
+
+  const handleBackFromQuestionnaire = () => {
+    setShowQuestionnaire(false);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
@@ -82,7 +97,14 @@ export default function Report() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      {showQuestionnaire && selectedCategory ? (
+        <SymptomQuestionnaire 
+          category={selectedCategory}
+          onComplete={handleQuestionnaireComplete}
+          onBack={handleBackFromQuestionnaire}
+        />
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2">
         {/* Symptom Input */}
         <Card>
           <CardHeader>
@@ -134,6 +156,17 @@ export default function Report() {
                 );
               })}
             </div>
+            
+            {selectedCategory && (
+              <Button
+                variant="outline"
+                onClick={() => setShowQuestionnaire(true)}
+                className="w-full mt-4 flex items-center gap-2"
+              >
+                <Brain className="h-4 w-4" />
+                Take AI Health Questionnaire
+              </Button>
+            )}
           </CardContent>
         </Card>
 
@@ -188,7 +221,8 @@ export default function Report() {
             )}
           </CardContent>
         </Card>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -25,7 +25,7 @@ export function Navigation() {
         <Link to="/" className="flex items-center space-x-2">
           <Heart className="h-8 w-8 text-primary" />
           <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            ASHA Connect
+            Swasthya सहेली
           </span>
         </Link>
 

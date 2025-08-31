@@ -25,12 +25,16 @@ const healthTopics = [
     color: "bg-destructive",
     content: [
       "Perform monthly self-examinations",
-      "Look for lumps, skin changes, or nipple discharge",
+      "Look for lumps, skin changes, or nipple discharge", 
       "Check both breasts and underarm areas",
       "Best time: 7-10 days after period ends",
       "Regular screening after age 40 is recommended"
     ],
-    urgentSigns: ["New lump in breast or underarm", "Skin dimpling or puckering", "Nipple discharge or inversion"]
+    urgentSigns: ["New lump in breast or underarm", "Skin dimpling or puckering", "Nipple discharge or inversion"],
+    images: [
+      { src: "/src/assets/breast-self-exam.jpg", alt: "Breast self-examination technique guide", caption: "Self-examination technique - Check monthly after menstruation" },
+      { src: "/src/assets/breast-warning-signs.jpg", alt: "Breast cancer warning signs and symptoms", caption: "Warning signs to watch for - Consult doctor immediately if noticed" }
+    ]
   },
   {
     id: "anemia",
@@ -114,6 +118,24 @@ export default function Awareness() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Educational Images for Breast Cancer */}
+                {topic.id === "breast-cancer" && topic.images && (
+                  <div className="space-y-3">
+                    {topic.images.map((image, index) => (
+                      <div key={index} className="rounded-lg overflow-hidden">
+                        <img 
+                          src={image.src}
+                          alt={image.alt}
+                          className="w-full h-40 object-cover"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1 text-center p-2">
+                          {image.caption}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
                 <div>
                   <h4 className="font-medium mb-2 text-sm uppercase tracking-wide">Key Points</h4>
                   <ul className="space-y-1 text-sm">
